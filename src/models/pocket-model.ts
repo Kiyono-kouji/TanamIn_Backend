@@ -16,6 +16,7 @@ export interface CreatePocketRequest {
 export interface UpdatePocketRequest {
     id: number
     name?: string
+    walletType?: string
     isActive?: boolean
     total?: number
 }

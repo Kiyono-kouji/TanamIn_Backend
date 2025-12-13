@@ -23,7 +23,8 @@ export class PocketController {
 
     static async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const response = await PocketService.update(req.body)
+            const id = Number(req.params.id)
+            const response = await PocketService.update({ ...req.body, id })
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)

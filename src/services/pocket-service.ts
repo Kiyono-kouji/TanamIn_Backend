@@ -17,9 +17,15 @@ export class PocketService {
 
     static async update(request: UpdatePocketRequest): Promise<PocketResponse> {
         const data = Validation.validate(PocketValidation.UPDATE, request)
+        const updateData: any = {
+            ...(data.name !== undefined && { name: data.name }),
+            ...(data.walletType !== undefined && { walletType: data.walletType }),
+            ...(data.isActive !== undefined && { isActive: data.isActive }),
+            ...(data.total !== undefined && { total: data.total }),
+        }
         const pocket = await prismaClient.pockets.update({
             where: { id: data.id },
-            data,
+            data: updateData,
         })
         return pocket
     }
