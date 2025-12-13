@@ -37,10 +37,10 @@ privateRouter.put("/levels", LevelController.update)
 privateRouter.put("/transactions", TransactionController.update)
 
 // Theme routes
-privateRouter.get("/themes", ThemeController.getAllThemes)
-privateRouter.post("/themes/purchase", ThemeController.purchaseTheme)
-privateRouter.post("/themes/active", ThemeController.setActiveTheme)
-privateRouter.get("/themes/active", ThemeController.getActiveTheme)
+privateRouter.get("/themes", ThemeController.getByUser)
+privateRouter.post("/themes/purchase", ThemeController.purchase)
+privateRouter.post("/themes/active", ThemeController.activate)
+privateRouter.get("/themes/active", ThemeController.getActive)
 
 // User routes
 privateRouter.get("/profile", UserController.getProfile)

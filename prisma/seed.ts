@@ -4,17 +4,69 @@ import bcrypt from "bcrypt"
 const prisma = new PrismaClient()
 
 async function main() {
-  // Seed Themes
-  const theme = await prisma.themes.upsert({
+  // Seed Themes with all color fields
+  const theme1 = await prisma.themes.upsert({
     where: { id: 1 },
     update: {},
     create: {
       price: 0,
-      primaryColor: "#4CAF50",
-      secondaryColor: "#81C784",
-      textColor: "#FFFFFF",
+      colors: {
+        primary: "#4CAF50",
+        subprimary: "#66BB6A",
+        secondary: "#81C784",
+        subsecondary: "#A5D6A7",
+        background: "#FFFFFF",
+        subbackground: "#F5F5F5",
+        text: "#212121",
+        subtext: "#757575",
+        pie1: "#4CAF50",
+        pie2: "#81C784",
+      },
     },
   })
+  
+
+  const theme2 = await prisma.themes.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      price: 100,
+      colors: {
+        primary: "#2196F3",
+        subprimary: "#42A5F5",
+        secondary: "#64B5F6",
+        subsecondary: "#90CAF9",
+        background: "#FFFFFF",
+        subbackground: "#E3F2FD",
+        text: "#0D47A1",
+        subtext: "#1976D2",
+        pie1: "#2196F3",
+        pie2: "#64B5F6",
+      },
+    },
+  })
+  
+
+  const theme3 = await prisma.themes.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      price: 150,
+      colors: {
+        primary: "#FF9800",
+        subprimary: "#FFA726",
+        secondary: "#FFB74D",
+        subsecondary: "#FFCC80",
+        background: "#FFFFFF",
+        subbackground: "#FFF3E0",
+        text: "#E65100",
+        subtext: "#F57C00",
+        pie1: "#FF9800",
+        pie2: "#FFB74D",
+      },
+    },
+  })
+  
 
   // Hash the password for the seeded user
   const hashedPassword = await bcrypt.hash("password123", 10)
@@ -28,11 +80,22 @@ async function main() {
       username: "testuser",
       email: "test@example.com",
       password: hashedPassword,
-      activeThemeId: theme.id,
+      activeThemeId: theme1.id,
       budgetingPercentage: 20,
-      coin: 100,
+      coin: 500,
       streak: 3,
       highestStreak: 5,
+    },
+  })
+
+  // Seed User_Themes (unlock default theme for user)
+  await prisma.user_Themes.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      userId: user.id,
+      themeId: theme1.id,
+      unlocked: true,
     },
   })
 
@@ -53,7 +116,7 @@ async function main() {
     where: { id: 2 },
     update: {},
     create: {
-      name: "Inactive",
+      name: "Investment",
       total: 5000,
       walletType: "Investment",
       isActive: true,
@@ -65,9 +128,9 @@ async function main() {
     where: { id: 3 },
     update: {},
     create: {
-      name: "Active",
+      name: "Savings",
       total: 5000,
-      walletType: "Investment",
+      walletType: "Savings",
       isActive: true,
       userId: user.id,
     },
@@ -85,7 +148,7 @@ async function main() {
   })
 
   // Seed Questions
-  const question = await prisma.questions.upsert({
+  await prisma.questions.upsert({
     where: { id: 1 },
     update: {},
     create: {
@@ -96,17 +159,6 @@ async function main() {
       option4: "6",
       answer: "4",
       levelId: level.id,
-    },
-  })
-
-  // Seed User_Themes
-  await prisma.user_Themes.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      userId: user.id,
-      themeId: theme.id,
-      unlocked: true,
     },
   })
 
@@ -136,7 +188,7 @@ async function main() {
       action: "Sell",
       nominal: 3000,
       unitAmount: 2,
-      pocketId: 2,  
+      pocketId: 2,
       toPocketId: 1,
     },
   })
@@ -156,7 +208,7 @@ async function main() {
     },
   })
 
-  console.log("Seeded all tables!")
+  console.log("✅ Seeded all tables successfully!")
 }
 
 main()

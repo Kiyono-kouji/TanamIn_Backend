@@ -110,15 +110,15 @@ model Questions {
 // ---------- Themes ----------
 model Themes {
   id            Int      @id @default(autoincrement())
-  price         Int
-  primaryColor  String
-  secondaryColor String
-  textColor     String
+  price         Int      @default(0)
+  colors        Json
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  userThemes   User_Themes[]
-  activeUsers  Users[]       @relation("ActiveTheme")
+  user_Themes   User_Themes[] 
+  activeUsers   Users[]       @relation("ActiveTheme")
 
-  @@map("Themes")
+  @@map("themes")
 }
 
 // ---------- User_Themes ----------

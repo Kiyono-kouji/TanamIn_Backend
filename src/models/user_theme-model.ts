@@ -13,8 +13,15 @@ export interface UserThemeResponse {
     theme?: {
         id: number
         price: number
-        primaryColor: string
-        secondaryColor: string
-        textColor: string
+        primary: string
+        subprimary: string
+        secondary: string
+        subsecondary: string
+        background: string
+        subbackground: string
+        text: string
+        subtext: string
+        pie1: string
+        pie2: string
     }
 }
