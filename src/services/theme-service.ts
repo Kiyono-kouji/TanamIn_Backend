@@ -30,7 +30,8 @@ export class ThemeService {
             secondaryColor: theme.secondaryColor,
             textColor: theme.textColor,
             unlocked: theme.userThemes.length > 0 ? theme.userThemes[0].unlocked : false,
-            isActive: theme.id === activeThemeId
+            isActive: theme.id === activeThemeId,
+            userId: theme.userThemes.length > 0 ? theme.userThemes[0].userId : undefined
         }))
     }
 
@@ -162,7 +163,8 @@ export class ThemeService {
             secondaryColor: user.activeTheme.secondaryColor,
             textColor: user.activeTheme.textColor,
             unlocked: !!userTheme,
-            isActive: true
+            isActive: true,
+            userId: userTheme?.userId || userId
         }
     }
 }
