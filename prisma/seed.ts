@@ -27,7 +27,7 @@ async function main() {
       name: "Test User",
       username: "testuser",
       email: "test@example.com",
-      password: hashedPassword, // use the hash
+      password: hashedPassword,
       activeThemeId: theme.id,
       budgetingPercentage: 20,
       coin: 100,
@@ -107,6 +107,52 @@ async function main() {
       userId: user.id,
       themeId: theme.id,
       unlocked: true,
+    },
+  })
+
+  // Seed Transactions
+  await prisma.transactions.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      date: new Date(),
+      name: "Buy Seeds",
+      pricePerUnit: 1000,
+      action: "Buy",
+      nominal: 2000,
+      unitAmount: 2,
+      pocketId: 1,
+      toPocketId: 2,
+    },
+  })
+
+  await prisma.transactions.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      date: new Date(),
+      name: "Sell Plants",
+      pricePerUnit: 1500,
+      action: "Sell",
+      nominal: 3000,
+      unitAmount: 2,
+      pocketId: 2,  
+      toPocketId: 1,
+    },
+  })
+
+  await prisma.transactions.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      date: new Date(),
+      name: "Pocket Transfer",
+      pricePerUnit: 0,
+      action: "Out",
+      nominal: 1000,
+      unitAmount: 1,
+      pocketId: 1,
+      toPocketId: 3,
     },
   })
 
