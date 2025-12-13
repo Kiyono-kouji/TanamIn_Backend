@@ -1,7 +1,7 @@
 import express from "express"
 import { authMiddleware } from "../middlewares/auth-middleware"
 import { PocketController } from "../controllers/pocket-controller"
-import { TransactionController } from "../controllers/transaction-contoller"
+import { TransactionController } from "../controllers/transaction-controller"
 import { ThemeController } from "../controllers/theme-controller"
 import { UserController } from "../controllers/user-controller"
 import { QuestionController } from "../controllers/question-controller"
