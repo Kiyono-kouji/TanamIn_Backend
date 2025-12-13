@@ -8,6 +8,7 @@ export interface UserJWTPayload {
 }
 
 export interface RegisterUserRequest {
+    name: string
     username: string
     email: string
     password: string
@@ -19,6 +20,9 @@ export interface LoginUserRequest {
 }
 
 export interface UserResponse {
+    id: number
+    username: string
+    email: string
     token?: string
 }
 
@@ -28,11 +32,14 @@ export function toUserResponse(
     email: string
 ): UserResponse {
     return {
+        id,
+        username,
+        email,
         token: generateToken(
             {
-                id: id,
-                username: username,
-                email: email,
+                id,
+                username,
+                email,
             },
             "1h"
         ),

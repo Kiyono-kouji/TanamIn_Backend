@@ -2,27 +2,16 @@ import { z, ZodType } from "zod"
 
 export class UserValidation {
     static readonly REGISTER: ZodType = z.object({
+        name: z.string().min(1, { error: "Name can not be empty!" }),
         username: z
-            .string({
-                error: "Username must be string!",
-            })
-            .min(1, {
-                error: "Username can not be empty!",
-            }),
+            .string({ error: "Username must be string!" })
+            .min(1, { error: "Username can not be empty!" }),
         email: z
-            .email({
-                error: "Email format is invalid!",
-            })
-            .min(1, {
-                error: "Email can not be empty!",
-            }),
+            .email({ error: "Email format is invalid!" })
+            .min(1, { error: "Email can not be empty!" }),
         password: z
-            .string({
-                error: "Password must be string!",
-            })
-            .min(8, {
-                error: "Password must contain more than or equal to 8 characters!",
-            }),
+            .string({ error: "Password must be string!" })
+            .min(8, { error: "Password must contain more than or equal to 8 characters!" }),
     })
 
     static readonly LOGIN: ZodType = z.object({

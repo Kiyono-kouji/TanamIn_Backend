@@ -17,7 +17,7 @@ export class UserService {
             request
         )
 
-        const email = await prismaClient.user.findFirst({
+        const email = await prismaClient.users.findFirst({
             where: {
                 email: validatedData.email,
             },
@@ -29,8 +29,9 @@ export class UserService {
 
         validatedData.password = await bcrypt.hash(validatedData.password, 10)
 
-        const user = await prismaClient.user.create({
+        const user = await prismaClient.users.create({
             data: {
+                name: validatedData.name,
                 username: validatedData.username,
                 email: validatedData.email,
                 password: validatedData.password,
@@ -43,7 +44,7 @@ export class UserService {
     static async login(request: LoginUserRequest): Promise<UserResponse> {
         const validatedData = Validation.validate(UserValidation.LOGIN, request)
 
-        const user = await prismaClient.user.findFirst({
+        const user = await prismaClient.users.findFirst({
             where: {
                 email: validatedData.email,
             },
