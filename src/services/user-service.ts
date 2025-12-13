@@ -8,7 +8,6 @@ import {
 import { prismaClient } from "../utils/database-util"
 import { UserValidation } from "../validations/user-validation"
 import { Validation } from "../validations/validation"
-import { ProfileValidation } from "../validations/profile-validation"
 import bcrypt from "bcrypt"
 
 export class UserService {
@@ -88,7 +87,7 @@ export class UserService {
 
     // Update profile (name, username, email, password)
     static async updateProfile(userId: number, request: { name?: string; username?: string; email?: string; password?: string }) {
-        const data = Validation.validate(ProfileValidation.UPDATE_PROFILE, request)
+        const data = Validation.validate(UserValidation.UPDATE_PROFILE, request)
 
         if (data.email) {
             const existing = await prismaClient.users.findFirst({ where: { email: data.email, NOT: { id: userId } } })
@@ -129,7 +128,7 @@ export class UserService {
 
     // Update budgeting percentage
     static async updateBudgetingPercentage(userId: number, request: { budgetingPercentage: number }) {
-        const data = Validation.validate(ProfileValidation.UPDATE_BUDGETING, request)
+        const data = Validation.validate(UserValidation.UPDATE_BUDGETING, request)
 
         const updated = await prismaClient.users.update({
             where: { id: userId },
