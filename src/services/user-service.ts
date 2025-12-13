@@ -4,6 +4,9 @@ import {
     RegisterUserRequest,
     toUserResponse,
     UserResponse,
+    ProfileResponse,
+    UpdateProfileRequest,
+    UpdateBudgetingPercentageRequest,
 } from "../models/user-model"
 import { prismaClient } from "../utils/database-util"
 import { UserValidation } from "../validations/user-validation"
@@ -67,14 +70,14 @@ export class UserService {
     }
 
     // Get profile
-    static async getProfile(userId: number) {
+    static async getProfile(userId: number): Promise<ProfileResponse> {
         const user = await prismaClient.users.findUnique({ where: { id: userId } })
         if (!user) throw new ResponseError(404, "User not found")
 
         return {
             id: user.id,
-            name: (user as any).name ?? null,
-            username: (user as any).username ?? null,
+            name: user.name,
+            username: user.username,
             email: user.email,
             coin: user.coin,
             streak: user.streak,
@@ -86,7 +89,7 @@ export class UserService {
     }
 
     // Update profile (name, username, email, password)
-    static async updateProfile(userId: number, request: { name?: string; username?: string; email?: string; password?: string }) {
+    static async updateProfile(userId: number, request: UpdateProfileRequest): Promise<ProfileResponse> {
         const data = Validation.validate(UserValidation.UPDATE_PROFILE, request)
 
         if (data.email) {
@@ -94,8 +97,8 @@ export class UserService {
             if (existing) throw new ResponseError(400, "Email already in use")
         }
 
-        if ((data as any).username) {
-            const existingUsername = await prismaClient.users.findFirst({ where: { username: (data as any).username, NOT: { id: userId } } })
+        if (data.username) {
+            const existingUsername = await prismaClient.users.findFirst({ where: { username: data.username, NOT: { id: userId } } })
             if (existingUsername) throw new ResponseError(400, "Username already in use")
         }
 
@@ -106,7 +109,7 @@ export class UserService {
             where: { id: userId },
             data: {
                 ...(data.name !== undefined && { name: data.name }),
-                ...((data as any).username !== undefined && { username: (data as any).username }),
+                ...(data.username !== undefined && { username: data.username }),
                 ...(data.email !== undefined && { email: data.email }),
                 ...(hashed !== undefined && { password: hashed }),
             },
@@ -114,8 +117,8 @@ export class UserService {
 
         return {
             id: updated.id,
-            name: (updated as any).name ?? null,
-            username: (updated as any).username ?? null,
+            name: updated.name,
+            username: updated.username,
             email: updated.email,
             coin: updated.coin,
             streak: updated.streak,
@@ -127,7 +130,7 @@ export class UserService {
     }
 
     // Update budgeting percentage
-    static async updateBudgetingPercentage(userId: number, request: { budgetingPercentage: number }) {
+    static async updateBudgetingPercentage(userId: number, request: UpdateBudgetingPercentageRequest): Promise<ProfileResponse> {
         const data = Validation.validate(UserValidation.UPDATE_BUDGETING, request)
 
         const updated = await prismaClient.users.update({
@@ -137,8 +140,8 @@ export class UserService {
 
         return {
             id: updated.id,
-            name: (updated as any).name ?? null,
-            username: (updated as any).username ?? null,
+            name: updated.name,
+            username: updated.username,
             email: updated.email,
             coin: updated.coin,
             streak: updated.streak,

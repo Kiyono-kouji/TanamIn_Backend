@@ -1,5 +1,3 @@
-import type { UserTheme } from "./user_theme-model"
-
 export interface Theme {
     id: number
     price: number
@@ -28,7 +26,6 @@ export interface ThemeResponse {
     pie1: string
     pie2: string
     unlocked: boolean
-    isActive: boolean
     userId?: number
 }
 
