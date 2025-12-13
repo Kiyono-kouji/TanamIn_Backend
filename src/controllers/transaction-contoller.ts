@@ -1,20 +1,20 @@
 import { Request, Response, NextFunction } from "express"
-import { PocketService } from "../services/pocket-service"
+import { TransactionService } from "../services/transaction-service"
 
-export class PocketController {
+export class TransactionController {
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const response = await PocketService.create(req.body)
+            const response = await TransactionService.create(req.body)
             res.status(201).json({ data: response })
         } catch (error) {
             next(error)
         }
     }
 
-    static async getByUser(req: Request, res: Response, next: NextFunction) {
+    static async getByPocket(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = Number(req.params.userId)
-            const response = await PocketService.getByUser(userId)
+            const pocketId = Number(req.params.pocketId)
+            const response = await TransactionService.getByPocket(pocketId)
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)
@@ -23,7 +23,7 @@ export class PocketController {
 
     static async update(req: Request, res: Response, next: NextFunction) {
         try {
-            const response = await PocketService.update(req.body)
+            const response = await TransactionService.update(req.body)
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)
