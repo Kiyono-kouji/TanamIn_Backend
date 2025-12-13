@@ -20,12 +20,12 @@ privateRouter.post("/transactions", TransactionController.create)
 privateRouter.get("/transactions/pocket/:pocketId", TransactionController.getByPocket)
 // privateRouter.patch("/transactions/:id", TransactionController.update)
 
-// Question routes (private because questions are tied to levels/user context)
+// Question routes
 privateRouter.post("/questions", QuestionController.create)
 privateRouter.get("/questions/level/:levelId", QuestionController.getByLevel)
 privateRouter.get("/questions", QuestionController.getAll)
 
-// Level routes (private; levels are user-specific and can be updated)
+// Level routes
 privateRouter.post("/levels", LevelController.create)
 privateRouter.get("/levels/user/:userId", LevelController.getByUser)
 privateRouter.get("/levels", LevelController.getAll)
