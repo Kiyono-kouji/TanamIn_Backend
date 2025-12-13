@@ -4,7 +4,11 @@ import { PocketService } from "../services/pocket-service"
 export class PocketController {
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const response = await PocketService.create(req.body)
+            const userId = (req as any).user.id
+            const response = await PocketService.create({
+                ...req.body,
+                userId
+            })
             res.status(201).json({ data: response })
         } catch (error) {
             next(error)

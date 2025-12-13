@@ -32,4 +32,34 @@ export class UserController {
             next(error)
         }
     }
+
+    static async getProfile(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user.id
+            const response = await UserService.getProfile(userId)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async updateProfile(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user.id
+            const response = await UserService.updateProfile(userId, req.body)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async updateBudgetingPercentage(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user.id
+            const response = await UserService.updateBudgetingPercentage(userId, req.body)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

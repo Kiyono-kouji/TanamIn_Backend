@@ -2,6 +2,8 @@ import express from "express"
 import { authMiddleware } from "../middlewares/auth-middleware"
 import { PocketController } from "../controllers/pocket-controller"
 import { TransactionController } from "../controllers/transaction-contoller"
+import { ThemeController } from "../controllers/theme-controller"
+import { UserController } from "../controllers/user-controller"
 import { QuestionController } from "../controllers/question-controller"
 import { LevelController } from "../controllers/level-controller"
 
@@ -18,6 +20,7 @@ privateRouter.patch("/pockets/:id", PocketController.update)
 // Transaction routes
 privateRouter.post("/transactions", TransactionController.create)
 privateRouter.get("/transactions/pocket/:pocketId", TransactionController.getByPocket)
+
 // privateRouter.patch("/transactions/:id", TransactionController.update)
 
 // Question routes
@@ -30,3 +33,16 @@ privateRouter.post("/levels", LevelController.create)
 privateRouter.get("/levels/user/:userId", LevelController.getByUser)
 privateRouter.get("/levels", LevelController.getAll)
 privateRouter.put("/levels", LevelController.update)
+
+privateRouter.put("/transactions", TransactionController.update)
+
+// Theme routes
+privateRouter.get("/themes", ThemeController.getAllThemes)
+privateRouter.post("/themes/purchase", ThemeController.purchaseTheme)
+privateRouter.post("/themes/active", ThemeController.setActiveTheme)
+privateRouter.get("/themes/active", ThemeController.getActiveTheme)
+
+// User routes
+privateRouter.get("/profile", UserController.getProfile)
+privateRouter.put("/profile", UserController.updateProfile)
+privateRouter.put("/profile/budgeting", UserController.updateBudgetingPercentage)
