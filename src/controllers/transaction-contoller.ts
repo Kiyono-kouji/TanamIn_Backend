@@ -14,8 +14,8 @@ export class TransactionController {
     static async getByPocket(req: Request, res: Response, next: NextFunction) {
         try {
             const pocketId = Number(req.params.pocketId)
-            const response = await TransactionService.getByPocket(pocketId)
-            res.status(200).json({ data: response })
+            const data = await TransactionService.getByPocket(pocketId)
+            res.status(200).json({ data })
         } catch (error) {
             next(error)
         }
