@@ -15,12 +15,12 @@ privateRouter.get("/pockets/user/:userId", PocketController.getByUser)
 privateRouter.put("/pockets", PocketController.update)
 privateRouter.delete("/pockets/:id", PocketController.delete)
 
-// Question routes (private because questions are tied to levels/user context)
+// Question routes
 privateRouter.post("/questions", QuestionController.create)
 privateRouter.get("/questions/level/:levelId", QuestionController.getByLevel)
 privateRouter.get("/questions", QuestionController.getAll)
 
-// Level routes (private; levels are user-specific and can be updated)
+// Level routes
 privateRouter.post("/levels", LevelController.create)
 privateRouter.get("/levels/user/:userId", LevelController.getByUser)
 privateRouter.get("/levels", LevelController.getAll)
