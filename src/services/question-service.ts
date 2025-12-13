@@ -7,6 +7,12 @@ import { ResponseError } from "../error/response-error"
 export class QuestionService {
     static async create(request: CreateQuestionRequest): Promise<QuestionResponse> {
         const data = Validation.validate(QuestionValidation.CREATE, request)
+
+        const level = await prismaClient.levels.findUnique({ where: { id: data.levelId } })
+        if (!level) {
+            throw new ResponseError(400, "Level not found")
+        }
+
         const question = await prismaClient.questions.create({ data })
         return question
     }
