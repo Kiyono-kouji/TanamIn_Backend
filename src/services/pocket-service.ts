@@ -91,9 +91,7 @@ export class PocketService {
                     nominal: true,
                     unitAmount: true,
                     pocketId: true,
-                    toPocketId: true,
-                    createdAt: true,
-                    updatedAt: true
+                    toPocketId: true
                 }
             }),
             prismaClient.transactions.count({ where })

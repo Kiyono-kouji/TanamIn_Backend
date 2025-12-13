@@ -1,39 +1,33 @@
 import { Request, Response, NextFunction } from "express"
 import { TransactionService } from "../services/transaction-service"
 
-function parsePositiveInt(value: any): number | null {
-    const n = Number(value)
-    if (!Number.isFinite(n)) return null
-    const i = Math.trunc(n)
-    return i > 0 ? i : null
-}
-
 export class TransactionController {
-    // Example: GET /api/transactions/pocket/:pocketId?page=1&limit=20
-    static async getByPocket(req: Request, res: Response, next: NextFunction) {
+    static async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = (req as any).user?.id
-            if (!userId) return res.status(401).json({ errors: "Unauthorized" })
-
-            const pocketId = parsePositiveInt(req.params.pocketId)
-            if (pocketId === null) return res.status(400).json({ errors: "Invalid pocket id" })
-
-            const page = (() => {
-                const p = parsePositiveInt(req.query.page ?? 1)
-                return p === null ? 1 : p
-            })()
-
-            const limit = (() => {
-                const l = parsePositiveInt(req.query.limit ?? 20)
-                return l === null ? 20 : Math.min(100, l)
-            })()
-
-            const result = await TransactionService.getByPocket(userId, pocketId, page, limit)
-            res.status(200).json({ data: result.data, meta: result.meta })
+            const response = await TransactionService.create(req.body)
+            res.status(201).json({ data: response })
         } catch (error) {
             next(error)
         }
     }
 
-    // other transaction controller methods...
-}   
+    static async getByPocket(req: Request, res: Response, next: NextFunction) {
+        try {
+            const pocketId = Number(req.params.pocketId)
+            const data = await TransactionService.getByPocket(pocketId)
+            res.status(200).json({ data })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = Number(req.params.id)
+            const response = await TransactionService.update({ ...req.body, id })
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
+}
