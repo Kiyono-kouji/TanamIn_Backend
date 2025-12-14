@@ -3,11 +3,15 @@ import { authMiddleware } from "../middlewares/auth-middleware"
 import { PocketController } from "../controllers/pocket-controller"
 import { QuestionController } from "../controllers/question-controller"
 import { LevelController } from "../controllers/level-controller"
+import { UserController } from "../controllers/user-controller"
 
 export const privateRouter = express.Router()
 
 // Protect all private routes
 privateRouter.use(authMiddleware)
+
+// Profile/User routes
+privateRouter.post("/profile/streak", UserController.completeStreak)
 
 // Pocket routes
 privateRouter.post("/pockets", PocketController.create)

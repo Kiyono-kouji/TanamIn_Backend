@@ -26,6 +26,19 @@ export interface UserResponse {
     token?: string
 }
 
+export interface ProfileResponse {
+    id: number
+    name: string
+    username: string
+    email: string
+    coin: number
+    streak: number
+    highestStreak: number
+    lastStreakDate: string | null
+    budgetingPercentage: number
+    activeThemeId: number
+}
+
 export function toUserResponse(
     id: number,
     username: string,
