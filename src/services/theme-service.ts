@@ -5,20 +5,19 @@ import { ResponseError } from "../error/response-error"
 import { ThemeValidation } from "../validations/theme-validation"
 
 function mapTheme(theme: any, pivotUserId?: number, isUnlocked = false, isActive = false, fallbackUserId?: number): ThemeResponse {
-    const colors = (theme.colors ?? {}) as Record<string, string>
     return {
         id: theme.id,
         price: theme.price,
-        primary: colors.primary,
-        subprimary: colors.subprimary,
-        secondary: colors.secondary,
-        subsecondary: colors.subsecondary,
-        background: colors.background,
-        subbackground: colors.subbackground,
-        text: colors.text,
-        subtext: colors.subtext,
-        pie1: colors.pie1,
-        pie2: colors.pie2,
+        primary: theme.primary,
+        subprimary: theme.subprimary,
+        secondary: theme.secondary,
+        subsecondary: theme.subsecondary,
+        background: theme.background,
+        subbackground: theme.subbackground,
+        text: theme.text,
+        subtext: theme.subtext,
+        pie1: theme.pie1,
+        pie2: theme.pie2,
         unlocked: isUnlocked,
         userId: pivotUserId ?? fallbackUserId
     } as ThemeResponse

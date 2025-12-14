@@ -1,7 +1,16 @@
 export interface Theme {
     id: number
     price: number
-    colors?: Record<string, string> | null
+    primary: string
+    subprimary: string
+    secondary: string
+    subsecondary: string
+    background: string
+    subbackground: string
+    text: string
+    subtext: string
+    pie1: string
+    pie2: string
     createdAt?: Date
     updatedAt?: Date
     user_Themes?: {

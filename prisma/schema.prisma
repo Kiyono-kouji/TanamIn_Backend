@@ -111,11 +111,20 @@ model Questions {
 model Themes {
   id            Int      @id @default(autoincrement())
   price         Int      @default(0)
-  colors        Json
+  primary       String   @default("")
+  subprimary    String   @default("")
+  secondary     String   @default("")
+  subsecondary  String   @default("")
+  background    String   @default("")
+  subbackground String   @default("")
+  text          String   @default("")
+  subtext       String   @default("")
+  pie1          String   @default("")
+  pie2          String   @default("")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  user_Themes   User_Themes[] 
+  user_Themes   User_Themes[]
   activeUsers   Users[]       @relation("ActiveTheme")
 
   @@map("themes")
