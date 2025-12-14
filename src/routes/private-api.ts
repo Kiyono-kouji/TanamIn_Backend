@@ -6,7 +6,6 @@ import { ThemeController } from "../controllers/theme-controller"
 import { UserController } from "../controllers/user-controller"
 import { QuestionController } from "../controllers/question-controller"
 import { LevelController } from "../controllers/level-controller"
-import { UserController } from "../controllers/user-controller"
 
 export const privateRouter = express.Router()
 
