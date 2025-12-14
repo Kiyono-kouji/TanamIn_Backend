@@ -6,11 +6,15 @@ import { ThemeController } from "../controllers/theme-controller"
 import { UserController } from "../controllers/user-controller"
 import { QuestionController } from "../controllers/question-controller"
 import { LevelController } from "../controllers/level-controller"
+import { UserController } from "../controllers/user-controller"
 
 export const privateRouter = express.Router()
 
 // Protect all private routes
 privateRouter.use(authMiddleware)
+
+// Profile/User routes
+privateRouter.post("/profile/streak", UserController.completeStreak)
 
 // Pocket routes
 privateRouter.post("/pockets", PocketController.create)
