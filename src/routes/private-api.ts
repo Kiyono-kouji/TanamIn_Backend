@@ -13,9 +13,6 @@ export const privateRouter = express.Router()
 // Protect all private routes
 privateRouter.use(authMiddleware)
 
-// Profile/User routes
-privateRouter.post("/profile/streak", UserController.completeStreak)
-
 // Pocket routes
 privateRouter.post("/pockets", PocketController.create)
 privateRouter.get("/pockets/user/:userId", PocketController.getByUser)
@@ -50,3 +47,4 @@ privateRouter.get("/themes/active", ThemeController.getActive)
 privateRouter.get("/profile", UserController.getProfile)
 privateRouter.put("/profile", UserController.updateProfile)
 privateRouter.put("/profile/budgeting", UserController.updateBudgetingPercentage)
+privateRouter.post("/profile/streak", UserController.completeStreak)
