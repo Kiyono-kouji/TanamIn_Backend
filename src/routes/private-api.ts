@@ -30,7 +30,6 @@ privateRouter.get("/questions", QuestionController.getAll)
 
 // Level routes
 privateRouter.post("/levels", LevelController.create)
-privateRouter.get("/levels/user/:userId", LevelController.getByUser)
 privateRouter.get("/levels", LevelController.getAll)
 privateRouter.put("/levels", LevelController.update)
 

@@ -17,19 +17,10 @@ export class LevelController {
         }
     }
 
-    static async getByUser(req: Request, res: Response, next: NextFunction) {
-        try {
-            const userId = Number(req.params.userId)
-            const response: LevelResponse[] = await LevelService.getByUser(userId)
-            res.status(200).json({ data: response })
-        } catch (error) {
-            next(error)
-        }
-    }
-
     static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const response: LevelResponse[] = await LevelService.getAll()
+            const userId = (req as any).user.id
+            const response: LevelResponse[] = await LevelService.getByUser(userId)
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)
