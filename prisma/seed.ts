@@ -76,7 +76,7 @@ async function main() {
       password: hashedPassword,
       activeThemeId: theme1.id,
       budgetingPercentage: 20,
-      coin: 500,
+      coin: 50,
       streak: 3,
       highestStreak: 5,
     },
