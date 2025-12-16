@@ -110,7 +110,7 @@ async function main() {
     where: { id: 2 },
     update: {},
     create: {
-      name: "Investment",
+      name: "Active Investments",
       total: 5000,
       walletType: "Investment",
       isActive: true,
@@ -122,9 +122,9 @@ async function main() {
     where: { id: 3 },
     update: {},
     create: {
-      name: "Savings",
+      name: "Inactive Investments",
       total: 5000,
-      walletType: "Savings",
+      walletType: "Investment",
       isActive: true,
       userId: user.id,
     },
