@@ -77,8 +77,8 @@ async function main() {
       activeThemeId: theme1.id,
       budgetingPercentage: 20,
       coin: 50,
-      streak: 3,
-      highestStreak: 5,
+      streak: 0,
+      highestStreak: 0,
     },
   })
 

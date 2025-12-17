@@ -31,7 +31,7 @@ privateRouter.get("/questions", QuestionController.getAll)
 // Level routes
 privateRouter.post("/levels", LevelController.create)
 privateRouter.get("/levels", LevelController.getAll)
-privateRouter.put("/levels", LevelController.update)
+privateRouter.patch("/levels/:id", LevelController.update)
 
 privateRouter.put("/transactions", TransactionController.update)
 
@@ -46,3 +46,4 @@ privateRouter.get("/profile", UserController.getProfile)
 privateRouter.put("/profile", UserController.updateProfile)
 privateRouter.put("/profile/budgeting", UserController.updateBudgetingPercentage)
 privateRouter.post("/profile/streak", UserController.completeStreak)
+privateRouter.post("/profile/course-complete", UserController.courseComplete)
