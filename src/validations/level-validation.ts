@@ -10,6 +10,6 @@ export class LevelValidation {
         id: z.number(),
         name: z.string().optional(),
         isCompleted: z.boolean().optional(),
-        userId: z.number(),
+        userId: z.number().optional(),
     })
 }

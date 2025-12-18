@@ -23,17 +23,21 @@ export class LevelService {
         return prismaClient.levels.findMany()
     }
 
-    static async update(request: UpdateLevelRequest): Promise<LevelResponse> {
+    static async update(request: UpdateLevelRequest, requestingUserId: number): Promise<LevelResponse> {
         const data = Validation.validate(LevelValidation.UPDATE, request)
 
         const existing = await prismaClient.levels.findUnique({ where: { id: data.id } })
-        if (!existing) {
-            throw new ResponseError(404, "Level not found")
+        if (!existing) throw new ResponseError(404, "Level not found")
+        if (existing.userId !== requestingUserId) throw new ResponseError(403, "Forbidden")
+
+        const updateData: any = {
+            ...(data.name !== undefined && { name: data.name }),
+            ...(data.isCompleted !== undefined && { isCompleted: data.isCompleted }),
         }
 
         const updated = await prismaClient.levels.update({
             where: { id: data.id },
-            data,
+            data: updateData,
         })
 
         return updated
