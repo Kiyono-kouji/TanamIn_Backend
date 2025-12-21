@@ -10,11 +10,65 @@ async function main() {
     update: {},
     create: {
       price: 0,
+<<<<<<< Updated upstream
       primaryColor: "#4CAF50",
       secondaryColor: "#81C784",
       textColor: "#FFFFFF",
     },
   })
+=======
+      primary: "#FFB86C",
+      subprimary: "#FFE3A3",
+      secondary: "#66BB6A",
+      subsecondary: "#8CD87D",
+      background: "#F5F5F5",
+      subbackground: "#FFFFFF",
+      text: "#222B45",
+      subtext: "#7A7A7A",
+      pie1: "#FFB86C",
+      pie2: "#66BB6A",
+    },
+  })
+
+
+  const theme2 = await prisma.themes.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      price: 100,
+      primary: "#42A5F5",
+      subprimary: "#BBDEFB",
+      secondary: "#26A69A",
+      subsecondary: "#80CBC4",
+      background: "#FAFAFA",
+      subbackground: "#FFFFFF",
+      text: "#0D47A1",
+      subtext: "#5472d3",
+      pie1: "#42A5F5",
+      pie2: "#26A69A",
+    },
+  })
+
+
+  const theme3 = await prisma.themes.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      price: 150,
+      primary: "#AB47BC",
+      subprimary: "#E1BEE7",
+      secondary: "#FF7043",
+      subsecondary: "#FFAB91",
+      background: "#FAFAFA",
+      subbackground: "#FFFFFF",
+      text: "#4A148C",
+      subtext: "#7c43bd",
+      pie1: "#AB47BC",
+      pie2: "#FF7043",
+    },
+  })
+
+>>>>>>> Stashed changes
 
   // Hash the password for the seeded user
   const hashedPassword = await bcrypt.hash("password123", 10)
