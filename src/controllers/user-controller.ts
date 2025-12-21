@@ -62,4 +62,30 @@ export class UserController {
             next(error)
         }
     }
+
+    static async completeStreak(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user.id
+            const timezone = (req.body?.timezone as string) ?? (req.headers["x-timezone"] as string) ?? "UTC"
+            const response = await UserService.completeDailyStreak(userId, timezone)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async courseComplete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user.id
+            const { coinDelta, claimStreak, timezone } = req.body as {
+                coinDelta?: number
+                claimStreak?: boolean
+                timezone?: string
+            }
+            const profile = await UserService.handleCourseCompletion(userId, coinDelta ?? 0, !!claimStreak, timezone)
+            res.status(200).json({ data: profile })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

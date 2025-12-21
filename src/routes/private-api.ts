@@ -1,9 +1,11 @@
 import express from "express"
 import { authMiddleware } from "../middlewares/auth-middleware"
 import { PocketController } from "../controllers/pocket-controller"
-import { TransactionController } from "../controllers/transaction-contoller"
+import { TransactionController } from "../controllers/transaction-controller"
 import { ThemeController } from "../controllers/theme-controller"
 import { UserController } from "../controllers/user-controller"
+import { QuestionController } from "../controllers/question-controller"
+import { LevelController } from "../controllers/level-controller"
 
 export const privateRouter = express.Router()
 
@@ -21,15 +23,27 @@ privateRouter.get("/transactions/pocket/:pocketId", TransactionController.getByP
 
 // privateRouter.patch("/transactions/:id", TransactionController.update)
 
+// Question routes
+privateRouter.post("/questions", QuestionController.create)
+privateRouter.get("/questions/level/:levelId", QuestionController.getByLevel)
+privateRouter.get("/questions", QuestionController.getAll)
+
+// Level routes
+privateRouter.post("/levels", LevelController.create)
+privateRouter.get("/levels", LevelController.getAll)
+privateRouter.patch("/levels/:id", LevelController.update)
+
 privateRouter.put("/transactions", TransactionController.update)
 
 // Theme routes
-privateRouter.get("/themes", ThemeController.getAllThemes)
-privateRouter.post("/themes/purchase", ThemeController.purchaseTheme)
-privateRouter.post("/themes/active", ThemeController.setActiveTheme)
-privateRouter.get("/themes/active", ThemeController.getActiveTheme)
+privateRouter.get("/themes", ThemeController.getByUser)
+privateRouter.post("/themes/purchase", ThemeController.purchase)
+privateRouter.post("/themes/active", ThemeController.activate)
+privateRouter.get("/themes/active", ThemeController.getActive)
 
 // User routes
 privateRouter.get("/profile", UserController.getProfile)
 privateRouter.put("/profile", UserController.updateProfile)
 privateRouter.put("/profile/budgeting", UserController.updateBudgetingPercentage)
+privateRouter.post("/profile/streak", UserController.completeStreak)
+privateRouter.post("/profile/course-complete", UserController.courseComplete)

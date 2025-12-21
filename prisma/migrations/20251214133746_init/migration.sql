@@ -67,14 +67,14 @@ CREATE TABLE "Questions" (
 );
 
 -- CreateTable
-CREATE TABLE "Themes" (
+CREATE TABLE "themes" (
     "id" SERIAL NOT NULL,
-    "price" INTEGER NOT NULL,
-    "primaryColor" TEXT NOT NULL,
-    "secondaryColor" TEXT NOT NULL,
-    "textColor" TEXT NOT NULL,
+    "price" INTEGER NOT NULL DEFAULT 0,
+    "colors" JSONB NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Themes_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "themes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -91,7 +91,7 @@ CREATE TABLE "User_Themes" (
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- AddForeignKey
-ALTER TABLE "Users" ADD CONSTRAINT "Users_activeThemeId_fkey" FOREIGN KEY ("activeThemeId") REFERENCES "Themes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Users" ADD CONSTRAINT "Users_activeThemeId_fkey" FOREIGN KEY ("activeThemeId") REFERENCES "themes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Pockets" ADD CONSTRAINT "Pockets_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -112,4 +112,4 @@ ALTER TABLE "Questions" ADD CONSTRAINT "Questions_levelId_fkey" FOREIGN KEY ("le
 ALTER TABLE "User_Themes" ADD CONSTRAINT "User_Themes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "User_Themes" ADD CONSTRAINT "User_Themes_themeId_fkey" FOREIGN KEY ("themeId") REFERENCES "Themes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User_Themes" ADD CONSTRAINT "User_Themes_themeId_fkey" FOREIGN KEY ("themeId") REFERENCES "themes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
