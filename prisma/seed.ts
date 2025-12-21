@@ -10,13 +10,6 @@ async function main() {
     update: {},
     create: {
       price: 0,
-<<<<<<< Updated upstream
-      primaryColor: "#4CAF50",
-      secondaryColor: "#81C784",
-      textColor: "#FFFFFF",
-    },
-  })
-=======
       primary: "#FFB86C",
       subprimary: "#FFE3A3",
       secondary: "#66BB6A",
@@ -68,7 +61,6 @@ async function main() {
     },
   })
 
->>>>>>> Stashed changes
 
   // Hash the password for the seeded user
   const hashedPassword = await bcrypt.hash("password123", 10)
