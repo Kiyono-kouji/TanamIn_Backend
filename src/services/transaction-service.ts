@@ -3,14 +3,23 @@ import { TransactionResponse, CreateTransactionRequest, UpdateTransactionRequest
 import { Validation } from "../validations/validation"
 import { ResponseError } from "../error/response-error"
 import { TransactionValidation } from "../validations/transaction-validation"
+import { DateTime } from "luxon" // Add this import at the top
 
 export class TransactionService {
     static async create(request: CreateTransactionRequest): Promise<TransactionResponse> {
         const data = Validation.validate(TransactionValidation.CREATE, request)
-        
-        let dateObj = new Date(data.date);
-        if (isNaN(dateObj.getTime())) {
-            dateObj = new Date(); // Fallback to now if invalid
+
+        // Always use Asia/Jakarta (GMT+7) for the date
+        let dateObj: Date
+        if (data.date) {
+            if (typeof data.date === "string") {
+                dateObj = DateTime.fromISO(data.date, { zone: "Asia/Jakarta" }).toJSDate()
+            } else {
+                // If it's already a Date, just use it
+                dateObj = DateTime.fromJSDate(data.date, { zone: "Asia/Jakarta" }).toJSDate()
+            }
+        } else {
+            dateObj = DateTime.now().setZone("Asia/Jakarta").toJSDate()
         }
 
         try {
@@ -28,13 +37,16 @@ export class TransactionService {
             })
             return transaction
         } catch (error) {
-            console.error("Error creating transaction:", error);
-            throw error;
+            console.error("Error creating transaction:", error)
+            throw error
         }
     }
 
     static async getByPocket(pocketId: number): Promise<TransactionResponse[]> {
-        return prismaClient.transactions.findMany({ where: { pocketId } })
+        return prismaClient.transactions.findMany({
+            where: { pocketId },
+            orderBy: { date: "desc" }
+        })
     }
 
     static async update(request: UpdateTransactionRequest): Promise<TransactionResponse> {

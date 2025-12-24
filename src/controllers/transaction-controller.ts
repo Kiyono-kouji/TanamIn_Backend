@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { TransactionService } from "../services/transaction-service"
+import { DateTime } from "luxon"
 
 export class TransactionController {
     static async create(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +16,12 @@ export class TransactionController {
         try {
             const pocketId = Number(req.params.pocketId)
             const data = await TransactionService.getByPocket(pocketId)
-            res.status(200).json({ data })
+            // Format date to ISO string in Asia/Jakarta (GMT+7)
+            const formatted = data.map(tx => ({
+                ...tx,
+                date: DateTime.fromJSDate(new Date(tx.date)).setZone("Asia/Jakarta").toISO()
+            }))
+            res.status(200).json({ data: formatted })
         } catch (error) {
             next(error)
         }
