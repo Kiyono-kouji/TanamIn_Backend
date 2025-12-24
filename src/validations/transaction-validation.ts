@@ -2,7 +2,7 @@ import { z, ZodType } from "zod"
 
 export class TransactionValidation {
     static readonly CREATE: ZodType = z.object({
-        date: z.union([z.string(), z.date()]),
+        date: z.union([z.string(), z.date()]).optional(),
         name: z.string().min(1, { message: "Name is required" }),
         pricePerUnit: z.number(),
         action: z.string().min(1, { message: "Action is required" }),
