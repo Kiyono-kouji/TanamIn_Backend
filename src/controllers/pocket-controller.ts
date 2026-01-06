@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { PocketService } from "../services/pocket-service"
+import { DateTime } from "luxon"
 
 export class PocketController {
     static async create(req: Request, res: Response, next: NextFunction) {
@@ -47,7 +48,12 @@ export class PocketController {
             const limit = Math.max(1, Math.min(100, Number(req.query.limit ?? 20)))
 
             const result = await PocketService.getHistory(userId, pocketId, page, limit)
-            res.status(200).json({ data: result.data, meta: result.meta })
+            // Format date to ISO string in Asia/Jakarta (GMT+7)
+            const formatted = result.data.map(tx => ({
+                ...tx,
+                date: DateTime.fromJSDate(new Date(tx.date)).setZone("Asia/Jakarta").toISO()
+            }))
+            res.status(200).json({ data: formatted, meta: result.meta })
         } catch (error) {
             next(error)
         }
