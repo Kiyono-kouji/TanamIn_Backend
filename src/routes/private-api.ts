@@ -44,7 +44,7 @@ privateRouter.get("/themes/active", ThemeController.getActive)
 
 // User routes
 privateRouter.get("/profile", UserController.getProfile)
-privateRouter.put("/profile", UserController.updateProfile)
+privateRouter.patch("/profile", UserController.updateProfile)
 privateRouter.put("/profile/budgeting", UserController.updateBudgetingPercentage)
 privateRouter.post("/profile/streak", UserController.completeStreak)
 privateRouter.post("/profile/course-complete", UserController.courseComplete)

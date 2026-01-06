@@ -4,6 +4,7 @@ import {
     RegisterUserRequest,
     UserResponse,
 } from "../models/user-model"
+import { ResponseError } from "../error/response-error"
 import { UserService } from "../services/user-service"
 
 export class UserController {
@@ -45,6 +46,9 @@ export class UserController {
 
     static async updateProfile(req: Request, res: Response, next: NextFunction) {
         try {
+            if (!(req as any).user) {
+                throw new ResponseError(401, "Unauthorized")
+            }
             const userId = (req as any).user.id
             const response = await UserService.updateProfile(userId, req.body)
             res.status(200).json({ data: response })
