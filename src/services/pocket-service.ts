@@ -30,6 +30,17 @@ export interface PagedResult<T> {
 export class PocketService {
     static async create(request: CreatePocketRequest): Promise<PocketResponse> {
         const data = Validation.validate(PocketValidation.CREATE, request)
+        
+        // Validasi: hanya bisa create dengan walletType "Main"
+        if (data.walletType !== "Main") {
+            throw new ResponseError(400, "Only Main wallet type is allowed for user-created pockets")
+        }
+        
+        // Validasi: Cegah user create pocket bernama "Kebutuhan"
+        if (data.name.trim().toLowerCase() === "kebutuhan") {
+            throw new ResponseError(400, "Pocket 'Kebutuhan' already exists by default. Please use another name.")
+        }
+        
         const pocket = await prismaClient.pockets.create({ data })
         return pocket
     }
@@ -40,21 +51,62 @@ export class PocketService {
 
     static async update(request: UpdatePocketRequest): Promise<PocketResponse> {
         const data = Validation.validate(PocketValidation.UPDATE, request)
+        
+        // CEK APAKAH POCKET EXIST DAN AMBIL DATA
+        const pocket = await prismaClient.pockets.findUnique({ where: { id: data.id } })
+        if (!pocket) throw new ResponseError(404, "Pocket not found")
+        
+        // 👇 PROTEKSI: Cegah update NAMA untuk pocket Investment wallet
+        if (data.name !== undefined && pocket.walletType === "Investment") {
+            throw new ResponseError(400, "Cannot update name of Investment wallet pockets")
+        }
+        
+        // 👇 PROTEKSI: Cegah update NAMA untuk pocket "Kebutuhan" di Main wallet
+        if (data.name !== undefined && pocket.walletType === "Main" && pocket.name.trim().toLowerCase() === "kebutuhan") {
+            throw new ResponseError(400, "Cannot update name of default pocket 'Kebutuhan'")
+        }
+        
+        // 👇 PROTEKSI: Cegah user mengubah nama pocket lain menjadi "Kebutuhan"
+        if (data.name !== undefined && data.name.trim().toLowerCase() === "kebutuhan") {
+            throw new ResponseError(400, "Pocket 'Kebutuhan' already exists by default. Please use another name.")
+        }
+        
         const updateData: any = {
             ...(data.name !== undefined && { name: data.name }),
             ...(data.walletType !== undefined && { walletType: data.walletType }),
             ...(data.isActive !== undefined && { isActive: data.isActive }),
             ...(data.total !== undefined && { total: data.total }),
         }
-        const pocket = await prismaClient.pockets.update({
+        const updated = await prismaClient.pockets.update({
             where: { id: data.id },
             data: updateData,
         })
-        return pocket
+        return updated
     }
 
-    static async delete(id: number): Promise<void> {
-        await prismaClient.pockets.delete({ where: { id } })
+    static async delete(userId: number, pocketId: number): Promise<PocketResponse> {
+        // Cek apakah pocket exist dan milik user
+        const pocket = await prismaClient.pockets.findUnique({ where: { id: pocketId } })
+        if (!pocket) throw new ResponseError(404, "Pocket not found")
+        if (pocket.userId !== userId) throw new ResponseError(403, "Forbidden")
+        
+        // PROTEKSI: Cegah delete pocket Investment wallet
+        if (pocket.walletType === "Investment") {
+            throw new ResponseError(400, "Cannot delete Investment wallet pockets")
+        }
+        
+        // PROTEKSI: Cegah delete pocket "Kebutuhan" di Main wallet
+        if (pocket.walletType === "Main" && pocket.name.trim().toLowerCase() === "kebutuhan") {
+            throw new ResponseError(400, "Cannot delete default pocket 'Kebutuhan'")
+        }
+        
+        // 4. Soft delete: update isActive = false
+        const deleted = await prismaClient.pockets.update({
+            where: { id: pocketId },
+            data: { isActive: false }
+        })
+        
+        return deleted
     }
 
     /**

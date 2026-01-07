@@ -36,6 +36,24 @@ export class PocketController {
         }
     }
 
+    static async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = (req as any).user?.id
+            if (!userId) return res.status(401).json({ errors: "Unauthorized" })
+            
+            const pocketId = Number(req.params.id)
+            if (Number.isNaN(pocketId)) return res.status(400).json({ errors: "Invalid pocket id" })
+            
+            const response = await PocketService.delete(userId, pocketId)
+            res.status(200).json({ 
+                data: response,
+                message: "Pocket deleted successfully" 
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async history(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = (req as any).user?.id

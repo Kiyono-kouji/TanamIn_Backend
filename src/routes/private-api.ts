@@ -16,6 +16,7 @@ privateRouter.use(authMiddleware)
 privateRouter.post("/pockets", PocketController.create)
 privateRouter.get("/pockets/user/:userId", PocketController.getByUser)
 privateRouter.patch("/pockets/:id", PocketController.update)
+privateRouter.delete("/pockets/:id", PocketController.delete)
 privateRouter.get("/pockets/:id/history", PocketController.history)
 
 // Transaction routes
